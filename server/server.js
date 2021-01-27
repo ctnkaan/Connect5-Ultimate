@@ -14,6 +14,7 @@ io.on("connection", (sock) => {
     sock.emit("message", "----- Connected -----");
 
     sock.on("message", (text) => io.emit("message", text));
+    sock.on("turn", ({x,y}) => io.emit("turn", {x,y}));
 });
 
 server.listen(3000, () => {
