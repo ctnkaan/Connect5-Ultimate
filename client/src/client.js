@@ -44,10 +44,21 @@ const getBoard = (canvas, numCells=20) => {
     con.clearRect(0, 0, canvas.width, canvas.height)
   }
 
-  const reset = () => {
+  const reset = (board) => {
     clear();
     drawGrid();
+    renderBoard(board)
   }
+
+  const renderBoard = (board = []) => {
+    board.forEach((row,y) => {
+      row.forEach((color,x) => {
+        color && fillCell(x,y,color);
+      });
+    });
+  };
+
+  
 
   const getCellCords = (x,y) => {
     return {
@@ -82,7 +93,7 @@ const getClickCords = (element, ev) => {
     sock.emit("turn", getCellCords(x,y));
   };
 
-  reset();
+  sock.on("board", reset);
 
   sock.on("message", log);
   sock.on("turn", ({x,y,color}) => fillCell(x,y,color));
